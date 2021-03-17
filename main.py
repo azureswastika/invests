@@ -2,21 +2,16 @@ from websocket import WebSocketApp, enableTrace
 
 
 class Streaming:
-    enableTrace(True)
-
-    def __init__(self, token: str) -> None:
-        """
-        Args:
-            token (str): Api key from https://finnhub.io
-        """
-        self.token = token
+    def __init__(self, host="127.0.0.1", port=3000, traceability=False) -> None:
         self.ws = WebSocketApp(
-            "wss://ws.finnhub.io?token=" + token,
+            f"ws://{host}:{port}",
             on_open=self.on_open,
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close,
         )
+        if traceability:
+            enableTrace(True)
 
     def run(self):
         """Run websocket"""
@@ -36,7 +31,5 @@ class Streaming:
 
 
 if __name__ == "__main__":
-    from os import environ
-
-    stream = Streaming(environ.get("TOKEN"))
-    stream.run()
+    main = Streaming()
+    main.run()
