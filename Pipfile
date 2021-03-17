@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 websocket-client = "*"
+pymongo = "*"
+pydantic = "*"
 
 [dev-packages]
 

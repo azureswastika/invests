@@ -1,8 +1,8 @@
-import websocket
+from websocket import WebSocketApp, enableTrace
 
 
 class Streaming:
-    websocket.enableTrace(True)
+    enableTrace(True)
 
     def __init__(self, token: str) -> None:
         """
@@ -10,7 +10,7 @@ class Streaming:
             token (str): Api key from https://finnhub.io
         """
         self.token = token
-        self.ws = websocket.WebSocketApp(
+        self.ws = WebSocketApp(
             "wss://ws.finnhub.io?token=" + token,
             on_open=self.on_open,
             on_message=self.on_message,
@@ -22,16 +22,16 @@ class Streaming:
         """Run websocket"""
         self.ws.run_forever()
 
-    def on_open(self, ws):
+    def on_open(self, ws: WebSocketApp):
         """On websocket open"""
 
-    def on_message(self, ws, message):
+    def on_message(self, ws: WebSocketApp, message: str):
         """On websocket message"""
 
-    def on_error(self, ws, error):
+    def on_error(self, ws: WebSocketApp, error: str):
         """On websocket error"""
 
-    def on_close(self, ws):
+    def on_close(self, ws: WebSocketApp):
         """On websocket close"""
 
 
