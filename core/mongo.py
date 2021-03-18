@@ -1,6 +1,5 @@
 from typing import Any
 
-from pydantic import BaseModel
 from pymongo import MongoClient
 from pymongo.collection import Collection
 
@@ -12,23 +11,22 @@ class Mongo:
         self.client = MongoClient() if host and port else MongoClient(host, port)
         self.database = self.client[database]
 
-    def get_collection(self, name: str, model: BaseModel):
-        return MongoCollection(self.database[name], model)
+    def get_collection(self, name: str):
+        return MongoCollection(self.database[name])
 
 
 class MongoCollection:
-    def __init__(self, obj: Collection, model: BaseModel) -> None:
-        self.obj = obj
-        self.model = model
+    def __init__(self, collection: Collection) -> None:
+        self.collection = collection
 
     def create(self, data: dict[str, Any]):
-        return self.get(self.obj.insert_one(data).inserted_id)
+        return self.collection.insert_one(data).inserted_id
 
-    def get(self, ffilter: dict) -> BaseModel:
-        return self.model(**self.obj.find_one(ffilter))
+    def get(self, ffilter: dict):
+        return self.collection.find_one(ffilter)
 
-    def select(self, ffilter=dict()) -> list[BaseModel]:
-        return [self.model(**obj) for obj in self.obj.find(ffilter)]
+    def select(self, ffilter=dict()):
+        return [data for data in self.collection.find(ffilter)]
 
-    def update(self, ffilter: dict, update: dict) -> BaseModel:
-        return self.model(**self.obj.update_one(ffilter, update))
+    def update(self, ffilter: dict, update: dict):
+        return self.collection.update_one(ffilter, update)
