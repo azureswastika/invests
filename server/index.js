@@ -1,10 +1,13 @@
 import { createServer } from 'nodejs-websocket';
+import mongoose from 'mongoose';
 // eslint-disable-next-line import/extensions
 import { search, defaultError } from './src/websocket.js';
+import connect from './src/database.js';
+
+connect();
 
 const server = createServer((conn) => {
   conn.on('text', (message) => {
-    console.log(message);
     const msg = JSON.parse(message);
     switch (msg.type) {
       case 'search':

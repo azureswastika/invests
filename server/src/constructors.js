@@ -18,5 +18,6 @@ export function SearchErrorConstructor(name) {
       ticker: {
         name,
       },
-  }
+    },
+  };
 }

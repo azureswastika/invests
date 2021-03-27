@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 websocket-client = "*"
-pymongo = "*"
 pydantic = "*"
 python-telegram-bot = "*"
 
